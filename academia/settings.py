@@ -78,14 +78,15 @@ WSGI_APPLICATION = 'academia.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': "academia",
-        "user": "web_academia",
-        "password": "<12345>",
-        "host": "localhost",
-        "port": "5436",
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'nombre_base_de_datos',
+        'USER': 'usuario',
+        'PASSWORD': 'contraseña',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
@@ -129,4 +130,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL="curso.usuario"
+AUTH_USER_MODEL="evento.usuario"

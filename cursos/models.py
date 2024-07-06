@@ -1,24 +1,18 @@
-import roles
+
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-from django.contrib.auth.models import abstractuser
-
-class usuario(abstractuser):
-    roles = (
-        ('admin',"administrador"),
-        ("normal","usuario normal")
-    )
-   rol=models.CharField(max_length=7, choices = roles , default='normal')
-
-class curso(models.Model):
-    nombre = models.CharField(max_length=150)
+class Evento(models.Model):  # Corregido el nombre del modelo
+    nombre = models.CharField(max_length=200)
     descripcion = models.TextField()
-    fecha_inicio = models.DateField()
-    fecha_fin = models.DateField()
-    cupos=models.PositiveIntegerField()
-    estados=models.BooleanField(default=True)
-    inscritos=models.ManyToManyField(usuario, related_name='cursos_inscritos,')
-    def __str__(self):
-        return self.nombre
+    ubicacion = models.CharField(max_length=200)
+    fecha = models.DateField()
+    hora = models.TimeField()
+    creador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='eventos_creados')
+
+class Inscripcion(models.Model):
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)  # Corregido el nombre del modelo
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha_inscripcion = models.DateTimeField(auto_now_add=True)
+
 
