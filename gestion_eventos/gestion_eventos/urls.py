@@ -1,5 +1,5 @@
 """
-URL configuration for academia project.
+URL configuration for gestion_eventos project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -14,13 +14,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib import admin
 from django.urls import path
-from . import views
 
 urlpatterns = [
-    path('registro/', views.RegistroView.as_view(), name='registro'),
-    path('eventos/', views.EventoListView.as_view(), name='lista_eventos'),
-    path('eventos/nuevo/', views.EventoCreateView.as_view(), name='nuevo_evento'),
-    path('eventos/<int:pk>/', views.EventoDetailView.as_view(), name='detalle_evento'),
-    path('inscripcion/<int:evento_id>/', views.inscribir_evento, name='inscribir_evento'),
+    path('admin/', admin.site.urls),
 ]

@@ -1,32 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import CreateView, ListView, DetailView
+from django.contrib.auth import login
+from django.urls import reverse_lazy
 from .models import Evento, Inscripcion
-from django.contrib.auth.decorators import login_required
+from .forms import RegistroForm, EventoForm
 
+class RegistroView(CreateView):
+    form_class = RegistroForm
+    template_name = 'registration/registro.html'
+    success_url = reverse_lazy('lista_eventos')
 
-login_required
-def crear_evento(request):
-    if request.method == 'POST':
-        form = EventoForm(request.POST)
-        if form.is_valid():
-            evento = form.save(commit=False)
-            evento.creador = request.user
-            evento.save()
-            return redirect('eventos:detalle_evento', evento_id=evento.id)
-    else:
-        form = EventoForm()
-    return render(request, 'eventos/crear_evento.html', {'form': form})
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect(self.success_url)
 
-login_required
-def detalle_evento(request, evento_id):
-    evento = get_object_or_404(Evento, pk=evento_id)
-    inscritos = Inscripcion.objects.filter(evento=evento)
-    return render(request, 'eventos/detalle_evento.html', {'evento': evento, 'inscritos': inscritos})
+class EventoListView(ListView):
+    model = Evento
+    template_name = 'eventos/lista_eventos.html'
+    context_object_name = 'eventos'
 
-login_required
-def inscribirse_evento(request, evento_id):
-    evento = get_object_or_404(Evento, pk=evento_id)
+class EventoCreateView(CreateView):
+    form_class = EventoForm
+    template_name = 'eventos/nuevo_evento.html'
+    success_url = reverse_lazy('lista_eventos')
+
+    def form_valid(self, form):
+        form.instance.creador = self.request.user
+        return super().form_valid(form)
+
+class EventoDetailView(DetailView):
+    model = Evento
+    template_name = 'eventos/detalle_evento.html'
+
+def inscribir_evento(request, evento_id):
+    evento = get_object_or_404(Evento, id=evento_id)
     Inscripcion.objects.create(evento=evento, usuario=request.user)
-    return redirect('eventos:detalle_evento', evento_id=evento.id)
-from django.shortcuts import render
+    return redirect('detalle_evento', pk=evento_id)
 
-# Create your views here.
+
+
+
