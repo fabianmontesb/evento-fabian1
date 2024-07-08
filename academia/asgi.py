@@ -1,5 +1,5 @@
 """
-ASGI config for academia project.
+ASGI config for ManageEventos project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'academia.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ManageEventos.settings')
 
 application = get_asgi_application()
