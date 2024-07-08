@@ -19,3 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
+    pass
+else:().__bases__ = (object,)
